@@ -181,6 +181,7 @@ footer {
 .slider__wrapper {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .slider__items {
@@ -274,4 +275,45 @@ footer {
   color: cyan;
   cursor: pointer;
   transition: all 0.5s ease;
+}
+
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: burlywood;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.dot__active, .dot:hover {
+  background-color: cyan;
+}
+
+.slide__prev, .slide__next {
+  cursor: pointer;
+  position: absolute;
+  top: 184px;
+  width: auto;
+  padding: 16px;
+  color: burlywood;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  border-radius: 3px;
+  user-select: none;
+}
+
+.slide__next {
+  right: 5%;
+}
+
+.slide__prev {
+  left: 5%;
+}
+
+.slide__prev:hover, .slide__next:hover {
+  color: cyan;
 }
