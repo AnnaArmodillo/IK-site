@@ -20,9 +20,9 @@ document.querySelector('.slider')
 
 function updateScroll() {
     if (window.scrollY > 0) {
-      document.querySelector('header').classList.add('header__scrolled');
+      document.querySelector('header').classList.add('header_scrolled');
     } else {
-      document.querySelector('header').classList.remove('header__scrolled');
+      document.querySelector('header').classList.remove('header_scrolled');
     }
   }
   window.addEventListener("scroll", updateScroll);
@@ -31,7 +31,7 @@ let index = 0;
 setInterval(function() {
     if (!hover) {
     for (let i = 0; i < items.length; i++) {
-        items[i].style.left = '900px';
+        items[i].style.left = '10000px';
             if (i !== index) {
               items[i].classList.contains('active') && items[i].classList.remove('active');
             }
@@ -60,3 +60,89 @@ setInterval(function() {
     index = 0;
   }
 }}, 2000);
+
+
+//плеер
+const audio = document.getElementById('section__songs__audio');
+const time = document.querySelector('.section__songs__time');
+const btnPlay = document.querySelector('.section__songs__play');
+const btnPause = document.querySelector('.section__songs__pause');
+const btnPrev = document.querySelector('.section__songs__prev');
+const btnNext = document.querySelector('.section__songs__next');
+const songs = document.querySelectorAll('.section__songs__tracks p');
+const playlist = [
+  'Иван Коробов-Вечер на дне.mp3',
+  'treck2.mp3',
+  'treck3.mp3',
+  'treck4.mp3',
+];
+
+let track;
+window.onload = function() {
+  track = 0;
+}
+function switchTrack (numTrack) {
+  audio.src = './audio/' + playlist[numTrack];
+  audio.currentTime = 0;
+  audio.play();
+}
+
+btnPlay.addEventListener('click', function() {
+  audio.play();
+  audioPlay = setInterval(function() {
+      let audioTime = Math.round(audio.currentTime);
+      let audioLength = Math.round(audio.duration)
+      time.style.width = (audioTime * 100) / audioLength + '%';
+      if (audioTime === audioLength && track < playlist.length - 1) {
+          track ++; 
+          switchTrack(track);
+      } else if (audioTime == audioLength && track >= playlist.length - 1) {
+          track = 0;
+          switchTrack(track);
+      }
+  }, 10)
+});
+
+btnPause.addEventListener('click', function() {
+  audio.pause();
+  clearInterval(audioPlay);
+});
+
+btnPrev.addEventListener('click', function() {
+  if (track > 0) {
+      track --;
+      switchTrack(track);
+  } else {
+      track = playlist.length - 1;
+      switchTrack(track);
+  }
+});
+
+btnNext.addEventListener('click', function() {
+  if (track < playlist.length - 1) {
+      track ++;
+      switchTrack(track);
+  } else {
+      track = 0;
+      switchTrack(track);
+  }
+});
+
+document.querySelector('.section__songs__audio-track').addEventListener('click', rewind);
+function rewind(event) {
+  let newTime = event.offsetX;
+  time.style.width = `${newTime / document.querySelector('.section__songs__audio-track').offsetWidth * 100}%`;
+  audio.currentTime = audio.duration * newTime / document.querySelector('.section__songs__audio-track').offsetWidth;
+}
+
+const songList = Array.from(songs);
+songList.forEach (song => {
+  song.addEventListener('click', function(event) {
+    track = songList.indexOf(event.target);
+    switchTrack(track);
+  })
+});
+
+//добавить определение,какой из списка трек играет и поменять его отображение - покрупнее шрифт и тд
+
+

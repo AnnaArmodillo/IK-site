@@ -52,9 +52,24 @@
           <p>Иван Коробов &mdash; музыкант из Новосибирска, представитель современного русского рока, автор и исполнитель.</p>
         </section>
         <section class="section__songs" id="songs">
-          <h1>Песни</h1>
-          <p>Вечер на дне</p>
-          <audio src="images/Иван Коробов-Вечер на дне.mp3" controls></audio>
+          <div><h1>Песни</h1></div>
+          <div class="section__songs_wrapper">
+          <div class="section__songs__tracks">
+            <p>Вечер на дне</p>
+            <audio id="section__songs__audio" src="audio/Иван Коробов-Вечер на дне.mp3"></audio>
+            <p>Белая душа</p>
+            <p>Коллектор</p>
+            <p>Да ну ее, да ну</p>
+            <p>Моя шарманка</p>
+          </div>
+          <div id="section__songs__controls">
+            <div class="section__songs__audio-track"><div class="section__songs__time"></div></div>
+            <div><button class="section__songs__play">Play</button>
+            <button class="section__songs__pause">Pause</button>
+            <button class="section__songs__prev">&#60;prev</button>
+            <button class="section__songs__next">next&#62;</button></div>
+        </div>
+      </div>
         </section>
         <section class="section__video" id="video">
           <h1>Видеозаписи выступлений</h1>
