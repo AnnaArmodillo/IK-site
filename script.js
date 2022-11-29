@@ -107,7 +107,6 @@ let dots = document.getElementsByClassName("dot");
 
 window.onload = function() {
   track = 0;
-
 }
 
 function switchTrack (numTrack) {
@@ -130,11 +129,14 @@ btnPlay.addEventListener('click', function() {
       songs[0].classList.add('playing');
     }
     audio.play();
-    
   });
+
   audioPlay = setInterval(function() {
+    if (audio.currentTime > 0 && songs[track].classList.contains('playing')) {
+      makeEqualizer();
+    }
     let audioTime = Math.round(audio.currentTime);
-    let audioLength = Math.round(audio.duration)
+    let audioLength = Math.round(audio.duration);
     time.style.width = (audioTime * 100) / audioLength + '%';
     if (audioTime === audioLength && track < playlist.length - 1) {
         track ++; 
@@ -143,7 +145,7 @@ btnPlay.addEventListener('click', function() {
         track = 0;
         switchTrack(track);
     }
-}, 10)
+}, 100)
 
 btnPause.addEventListener('click', function() {
   if (document.querySelector('.playing')) {
@@ -174,10 +176,20 @@ btnNext.addEventListener('click', function() {
 });
 
 document.querySelector('.section__songs__audio-track').addEventListener('click', rewind);
+time.addEventListener('click', rewind);
+document.querySelector('.section__songs__audio-track').addEventListener('mousemove', showTime);
+time.addEventListener('mousemove', showTime);
+
 function rewind(event) {
   let newTime = event.offsetX;
   time.style.width = `${newTime / document.querySelector('.section__songs__audio-track').offsetWidth * 100}%`;
   audio.currentTime = audio.duration * newTime / document.querySelector('.section__songs__audio-track').offsetWidth;
+}
+
+function showTime(event) {
+  let text = audio.duration * event.offsetX / document.querySelector('.section__songs__audio-track').offsetWidth;
+  let timeTitle = `${Math.floor(text / 60)}:${(text % 60).toFixed(0).padStart(2, '0')}`; 
+  this.title = timeTitle;
 }
 
 const songList = Array.from(songs);
@@ -209,5 +221,28 @@ btnVolumeDown.addEventListener ('click', () => {
   }
 })
 
+function getRandom(max = 50, min = 5) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+function makeEqualizer() {
+  let left = 0;
+  while (document.querySelector('.section__songs__audio-track').firstElementChild) {
+    document.querySelector('.section__songs__audio-track').firstElementChild.remove();
+  }
+  for (let i = 0; i < document.querySelector('.section__songs__audio-track').offsetWidth; i = i + (document.querySelector('.section__songs__audio-track').offsetWidth) / 100) {
+    let equalizerItem = document.createElement('div');
+    equalizerItem.classList.add('equalizer__item');
+    equalizerItem.style.height = `${getRandom()}px`;
+    equalizerItem.style.width = `${document.querySelector('.section__songs__audio-track').offsetWidth / 100}px`;
+    equalizerItem.style.left = `${left}px`;
+    let timeWidth = ((parseFloat(time.style.width) * document.querySelector('.section__songs__audio-track').offsetWidth)) / 100;
+    if (left <= timeWidth) {
+      equalizerItem.classList.replace('equalizer__item', 'equalizer__item_played');
+    }
+    document.querySelector('.section__songs__audio-track').appendChild(equalizerItem);
+    left = left + document.querySelector('.section__songs__audio-track').offsetWidth / 100;
+  }
+}
+
 //совместить кнопки пауза и слушать
-//вместо полосы воспроизведения сделать забор
+//попробовать устанавливать time.style.width на ближайший equalizer item played
