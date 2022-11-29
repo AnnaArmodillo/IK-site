@@ -1,9 +1,28 @@
+const audio = document.getElementById('section__songs__audio');
+const time = document.querySelector('.section__songs__time');
+const btnPlay = document.querySelector('.section__songs__play');
+const btnPause = document.querySelector('.section__songs__pause');
+const btnPrev = document.querySelector('.section__songs__prev');
+const btnNext = document.querySelector('.section__songs__next');
+const btnVolumeUp = document.querySelector('.section__songs__volume-up');
+const btnVolumeDown = document.querySelector('.section__songs__volume-down');
+const btnMute = document.querySelector('.section__songs__mute');
+const songs = document.querySelectorAll('.section__songs__tracks p');
+const playlist = [
+  'Иван Коробов - Вечер на дне.mp3',
+  'Иван Коробов - Белая душа.mp3',
+  'Иван Коробов - Коллектор.mp3',
+  'Иван Коробов - Да ну её, да ну.mp3',
+  'Иван Коробов - Моя Шарманка.mp3'
+];
+
+let track;
 let hover = 0;
 let index = 0;
+audio.volume = 1;
 const items = document.querySelectorAll('.slider__item');
 
 document.querySelector('.slider').addEventListener('mousemove', () => hover = 1);
-
 document.querySelector('.slider').addEventListener('mouseout', () => hover = 0);
 
 function updateScroll() {
@@ -19,13 +38,13 @@ function updateScroll() {
     showSlides();
   }
   function plusSlides(n) {
-    if ((index < items.length - 1) && n > 0) {
+    if ((index < items.length - 1) && (n > 0)) {
       index = index + n;
-    } else if ((index >= items.length - 1) && n > 0) {
+    } else if ((index >= items.length - 1) && (n > 0)) {
       index = 0;
-    } else if ((index >= 1 ) && n < 0) {
+    } else if ((index >= 1 ) && (n < 0)) {
       index = index + n;
-    } else {
+    } else if ((index === 0) && (n < 0)) {
       index = items.length - 1;
     }
     showSlides();
@@ -43,12 +62,13 @@ index = 0;
 function showSlides() {
   for (let i = 0; i < items.length; i++) {
     items[i].style.left = '10000px';
+    items[i].style.right = 'unset';
         if (i !== index) {
           items[i].classList.contains('active') && items[i].classList.remove('active');
         }
         if ((items[i - 1]) && ((i - 1) !== (index - 1))) {
             items[i - 1].classList.contains('prev') && items[i - 1].classList.remove('prev');
-        } else if (!items[i - 1]) {
+        } else if (!items[i - 1] && items[i - 1] !== 0) {
           items[items.length - 1].classList.contains('prev') && items[items.length - 1].classList.remove('prev');
         }
         if ((items[i + 1]) && ((i + 1) !== (index + 1))) {
@@ -63,7 +83,7 @@ if(items[index - 1]) {
   items[index - 1].classList.add('prev');
 } else {
   items[items.length - 1].style.left = 'unset';
-  items[items.length - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[items.length - 1].offsetWidth) + 'px';
+  items[items.length - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
   items[items.length - 1].classList.add('prev');
 }
 items[index].classList.add('active');
@@ -78,7 +98,6 @@ if (items[0].style.right) {items[0].style.right = 'unset';}
 items[0].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
 items[0].classList.add('next');
 }
-
 let dots = document.getElementsByClassName("dot");
         for (let i = 0; i < dots.length; i++) {
           dots[i].className = dots[i].className.replace(" dot__active", "");
@@ -86,50 +105,52 @@ let dots = document.getElementsByClassName("dot");
         dots[index].className += " dot__active";
 }
 
-//плеер
-const audio = document.getElementById('section__songs__audio');
-const time = document.querySelector('.section__songs__time');
-const btnPlay = document.querySelector('.section__songs__play');
-const btnPause = document.querySelector('.section__songs__pause');
-const btnPrev = document.querySelector('.section__songs__prev');
-const btnNext = document.querySelector('.section__songs__next');
-const songs = document.querySelectorAll('.section__songs__tracks p');
-const playlist = [
-  'Иван Коробов-Вечер на дне.mp3',
-  'treck2.mp3',
-  'treck3.mp3',
-  'treck4.mp3',
-];
-
-let track;
 window.onload = function() {
   track = 0;
+
 }
+
 function switchTrack (numTrack) {
+  songList.forEach(song => {
+    song.classList.remove('playing', 'paused');
+  })
+  songs[numTrack].classList.add('playing');
   audio.src = './audio/' + playlist[numTrack];
   audio.currentTime = 0;
   audio.play();
 }
 
+
 btnPlay.addEventListener('click', function() {
-  audio.play();
+    if (document.querySelector('.paused')) {
+      document.querySelector('.paused').classList.add('playing');
+      document.querySelector('.paused').classList.remove('paused');
+    }
+    if (track === 0) {
+      songs[0].classList.add('playing');
+    }
+    audio.play();
+    
+  });
   audioPlay = setInterval(function() {
-      let audioTime = Math.round(audio.currentTime);
-      let audioLength = Math.round(audio.duration)
-      time.style.width = (audioTime * 100) / audioLength + '%';
-      if (audioTime === audioLength && track < playlist.length - 1) {
-          track ++; 
-          switchTrack(track);
-      } else if (audioTime == audioLength && track >= playlist.length - 1) {
-          track = 0;
-          switchTrack(track);
-      }
-  }, 10)
-});
+    let audioTime = Math.round(audio.currentTime);
+    let audioLength = Math.round(audio.duration)
+    time.style.width = (audioTime * 100) / audioLength + '%';
+    if (audioTime === audioLength && track < playlist.length - 1) {
+        track ++; 
+        switchTrack(track);
+    } else if (audioTime == audioLength && track >= playlist.length - 1) {
+        track = 0;
+        switchTrack(track);
+    }
+}, 10)
 
 btnPause.addEventListener('click', function() {
+  if (document.querySelector('.playing')) {
+  document.querySelector('.playing').classList.add('paused');
+  document.querySelector('.playing').classList.remove('playing');
+  }
   audio.pause();
-  clearInterval(audioPlay);
 });
 
 btnPrev.addEventListener('click', function() {
@@ -167,6 +188,26 @@ songList.forEach (song => {
   })
 });
 
-//добавить определение,какой из списка трек играет и поменять его отображение - покрупнее шрифт и тд
+btnMute.addEventListener('click', () => {
+  audio.volume = 0;
+})
 
+btnVolumeUp.addEventListener ('click', () => {
+  if (audio.volume.toFixed(1) < 0.9) {
+  audio.volume += 0.1;
+  } else {
+    audio.volume = 1;
+  }
+})
 
+btnVolumeDown.addEventListener ('click', () => {
+  if (audio.volume.toFixed(1) > 0.1) {
+    audio.volume -= 0.1;
+  }
+  else {
+    audio.volume = 0;
+  }
+})
+
+//совместить кнопки пауза и слушать
+//вместо полосы воспроизведения сделать забор

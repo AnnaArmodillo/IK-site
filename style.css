@@ -90,7 +90,7 @@ p {
 
 .section__songs {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     text-align: left;
     padding: 50px;
     flex-direction: column;
@@ -104,9 +104,23 @@ p {
     font-size: 50px;
 }
 
-footer {
+.footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    padding-bottom: 10px;
+}
+
+.footer__youtube svg {
+  height: 35px;
+  width: 35px;
+  fill: red;
+}
+
+.footer__youtube svg:hover {
+  height: 45px;
+  width: 45px;
+  transition: all 0.3s ease-in;
+  cursor: pointer;
 }
 
 .footer__email svg {
@@ -121,6 +135,19 @@ footer {
     fill: cyan;
     transition: all 0.3s ease-in;
     cursor: pointer;
+}
+
+.footer__vk svg {
+  height: 35px;
+  width: 35px;
+  fill: rgb(37, 37, 224);
+}
+
+.footer__vk svg:hover {
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
 }
 
 .guitar {
@@ -243,7 +270,10 @@ footer {
   background-color: burlywood;
   color: cadetblue;
   font-size: 20px;
-  border-radius: 20px;
+  border-radius: 10px;
+  padding: 5px;
+  width: 35px;
+  height: 35px;
 }
 
 .section__songs button:hover {
@@ -254,7 +284,7 @@ footer {
 }
 
 #section__songs__controls {
-  width: 50%;
+  width: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -263,6 +293,7 @@ footer {
 
 .section__songs_wrapper {
   display: flex;
+  justify-content: center;
 }
 
 .section__songs__buttons {
@@ -316,4 +347,26 @@ footer {
 
 .slide__prev:hover, .slide__next:hover {
   color: cyan;
+}
+
+.playing {
+  color: cyan;
+  animation-name: blinking;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.paused {
+  color: cyan;
+  animation: none;
+}
+
+@keyframes blinking {
+  0% {opacity: 1;
+    }
+  50% {opacity: 0;
+    }
+  100% {opacity: 1;
+    }
 }
