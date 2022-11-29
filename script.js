@@ -107,6 +107,7 @@ let dots = document.getElementsByClassName("dot");
 
 window.onload = function() {
   track = 0;
+  document.querySelector('.section__songs__buttons__pause').style.display = 'none';
 }
 
 function switchTrack (numTrack) {
@@ -114,6 +115,8 @@ function switchTrack (numTrack) {
     song.classList.remove('playing', 'paused');
   })
   songs[numTrack].classList.add('playing');
+  document.querySelector('.section__songs__buttons__play').style.display = 'none';
+  document.querySelector('.section__songs__buttons__pause').style.display = 'initial';
   audio.src = './audio/' + playlist[numTrack];
   audio.currentTime = 0;
   audio.play();
@@ -125,6 +128,8 @@ btnPlay.addEventListener('click', function() {
       document.querySelector('.paused').classList.add('playing');
       document.querySelector('.paused').classList.remove('paused');
     }
+    document.querySelector('.section__songs__buttons__play').style.display = 'none';
+    document.querySelector('.section__songs__buttons__pause').style.display = 'initial';
     if (track === 0) {
       songs[0].classList.add('playing');
     }
@@ -151,6 +156,8 @@ btnPause.addEventListener('click', function() {
   if (document.querySelector('.playing')) {
   document.querySelector('.playing').classList.add('paused');
   document.querySelector('.playing').classList.remove('playing');
+  document.querySelector('.section__songs__buttons__pause').style.display = 'none';
+  document.querySelector('.section__songs__buttons__play').style.display = 'initial';
   }
   audio.pause();
 });
@@ -244,5 +251,5 @@ function makeEqualizer() {
   }
 }
 
-//совместить кнопки пауза и слушать
+
 //попробовать устанавливать time.style.width на ближайший equalizer item played

@@ -274,7 +274,7 @@ p {
   color: cadetblue;
   font-size: 20px;
   border-radius: 10px;
-  padding: 5px;
+  padding: 4px;
   width: 35px;
   height: 35px;
 }
@@ -308,8 +308,38 @@ p {
 .section__songs__buttons {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
   margin-top: 20px;
+  position: relative;
+}
+
+.section__songs__buttons__pause, .section__songs__buttons__play {
+  position: absolute;
+  left: calc((100% - 210px) / 12);
+}
+
+.section__songs__buttons__prev {
+  position: absolute;
+  left: calc((100% - 210px) * 3 / 12 + 35px);
+}
+
+.section__songs__buttons__next {
+  position: absolute;
+  left: calc((100% - 210px) * 5 / 12 + 70px);
+}
+
+.section__songs__buttons__up {
+  position: absolute;
+  left: calc((100% - 210px) * 7 / 12 + 105px);
+}
+
+.section__songs__buttons__down {
+  position: absolute;
+  left: calc((100% - 210px) * 9 / 12 + 140px);
+}
+
+.section__songs__buttons__mute {
+  position: absolute;
+  left: calc((100% - 210px) * 11 / 12 + 175px);
 }
 
 .section__songs__tracks p:hover {
