@@ -1,12 +1,13 @@
 const audio = document.getElementById('section__songs__audio');
 const time = document.querySelector('.section__songs__time');
-const btnPlay = document.querySelector('.section__songs__play');
-const btnPause = document.querySelector('.section__songs__pause');
-const btnPrev = document.querySelector('.section__songs__prev');
-const btnNext = document.querySelector('.section__songs__next');
-const btnVolumeUp = document.querySelector('.section__songs__volume-up');
-const btnVolumeDown = document.querySelector('.section__songs__volume-down');
-const btnMute = document.querySelector('.section__songs__mute');
+const btnPlay = document.querySelector('.section__songs__buttons__play');
+const btnPause = document.querySelector('.section__songs__buttons__pause');
+const btnPrev = document.querySelector('.section__songs__buttons__prev');
+const btnNext = document.querySelector('.section__songs__buttons__next');
+const btnVolumeUp = document.querySelector('.section__songs__buttons__up');
+const btnVolumeDown = document.querySelector('.section__songs__buttons__down');
+const btnMute = document.querySelector('.section__songs__buttons__mute');
+const btnOn = document.querySelector('.section__songs__buttons__on');
 const songs = document.querySelectorAll('.section__songs__tracks p');
 const playlist = [
   'Иван Коробов - Вечер на дне.mp3',
@@ -18,7 +19,7 @@ const playlist = [
 
 let track;
 let hover = 0;
-let index = 0;
+let index = 4;
 audio.volume = 1;
 const items = document.querySelectorAll('.slider__item');
 
@@ -52,12 +53,12 @@ function updateScroll() {
 
 setInterval(function() {
       if (!hover) {
+        index ++;
+        if (index === items.length) {
+        index = 0;
+        }
         showSlides();
-        index++;
-if (index === items.length) {
-index = 0;
-}
-  }}, 4000);
+  }}, 3000);
 
 function showSlides() {
   for (let i = 0; i < items.length; i++) {
@@ -107,7 +108,8 @@ let dots = document.getElementsByClassName("dot");
 
 window.onload = function() {
   track = 0;
-  document.querySelector('.section__songs__buttons__pause').style.display = 'none';
+  btnPause.style.display = 'none';
+  btnOn.style.display = 'none';
 }
 
 function switchTrack (numTrack) {
@@ -115,8 +117,8 @@ function switchTrack (numTrack) {
     song.classList.remove('playing', 'paused');
   })
   songs[numTrack].classList.add('playing');
-  document.querySelector('.section__songs__buttons__play').style.display = 'none';
-  document.querySelector('.section__songs__buttons__pause').style.display = 'initial';
+  btnPlay.style.display = 'none';
+  btnPause.style.display = 'initial';
   audio.src = './audio/' + playlist[numTrack];
   audio.currentTime = 0;
   audio.play();
@@ -128,8 +130,8 @@ btnPlay.addEventListener('click', function() {
       document.querySelector('.paused').classList.add('playing');
       document.querySelector('.paused').classList.remove('paused');
     }
-    document.querySelector('.section__songs__buttons__play').style.display = 'none';
-    document.querySelector('.section__songs__buttons__pause').style.display = 'initial';
+    btnPlay.style.display = 'none';
+    btnPause.style.display = 'initial';
     if (track === 0) {
       songs[0].classList.add('playing');
     }
@@ -156,8 +158,8 @@ btnPause.addEventListener('click', function() {
   if (document.querySelector('.playing')) {
   document.querySelector('.playing').classList.add('paused');
   document.querySelector('.playing').classList.remove('playing');
-  document.querySelector('.section__songs__buttons__pause').style.display = 'none';
-  document.querySelector('.section__songs__buttons__play').style.display = 'initial';
+  btnPause.style.display = 'none';
+  btnPlay.style.display = 'initial';
   }
   audio.pause();
 });
@@ -209,22 +211,57 @@ songList.forEach (song => {
 
 btnMute.addEventListener('click', () => {
   audio.volume = 0;
+  btnMute.style.display = 'none';
+  btnOn.style.display = 'initial';
+  if (btnVolumeUp.classList.contains('disabled')) {
+    btnVolumeUp.classList.remove('disabled');
+  }
+  if (!btnVolumeDown.classList.contains('disabled')) {
+    btnVolumeDown.classList.add('disabled');
+  }
+})
+
+btnOn.addEventListener('click', () => {
+  audio.volume = 1;
+  btnOn.style.display = 'none';
+  btnMute.style.display = 'initial';
+  if (btnVolumeDown.classList.contains('disabled')) {
+    btnVolumeDown.classList.remove('disabled');
+  }
+  if (!btnVolumeUp.classList.contains('disabled')) {
+    btnVolumeUp.classList.add('disabled');
+  }
 })
 
 btnVolumeUp.addEventListener ('click', () => {
   if (audio.volume.toFixed(1) < 0.9) {
   audio.volume += 0.1;
+  btnVolumeDown.classList.remove('disabled');
+  btnOn.style.display = 'none';
+  btnMute.style.display = 'initial';
   } else {
     audio.volume = 1;
+    btnVolumeUp.classList.add('disabled');
+    btnOn.style.display = 'none';
+    btnMute.style.display = 'initial';
   }
 })
 
 btnVolumeDown.addEventListener ('click', () => {
-  if (audio.volume.toFixed(1) > 0.1) {
+  btnVolumeUp.classList.remove('disabled');
+  if (audio.volume.toFixed(1) > 0.2) {
     audio.volume -= 0.1;
+    btnVolumeUp.classList.remove('disabled');
+  }
+  else if (audio.volume.toFixed(1) > 0.1) {
+    audio.volume -= 0.1;
+    btnVolumeUp.classList.remove('disabled');
   }
   else {
     audio.volume = 0;
+    btnVolumeDown.classList.add('disabled');
+    btnOn.style.display = 'initial';
+    btnMute.style.display = 'none';
   }
 })
 

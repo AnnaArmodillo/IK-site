@@ -279,7 +279,7 @@ p {
   height: 35px;
 }
 
-.section__songs button:hover {
+.section__songs button:hover:not(.disabled) {
   background-color: cyan;
   cursor: pointer;
   box-shadow: 5px 2px 10px burlywood;
@@ -337,7 +337,7 @@ p {
   left: calc((100% - 210px) * 9 / 12 + 140px);
 }
 
-.section__songs__buttons__mute {
+.section__songs__buttons__mute, .section__songs__buttons__on {
   position: absolute;
   left: calc((100% - 210px) * 11 / 12 + 175px);
 }
@@ -420,3 +420,4 @@ p {
   background-color: cyan;
   margin-bottom: 6px;
 }
+
