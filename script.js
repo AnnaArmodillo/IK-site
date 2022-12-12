@@ -9,6 +9,9 @@ const btnVolumeDown = document.querySelector('.section__songs__buttons__down');
 const btnMute = document.querySelector('.section__songs__buttons__mute');
 const btnOn = document.querySelector('.section__songs__buttons__on');
 const songs = document.querySelectorAll('.section__songs__tracks p');
+const tabcontent = document.getElementsByClassName("tabcontent");
+const tablinks = document.getElementsByClassName("tablinks");
+const items = document.querySelectorAll('.slider__item');
 const playlist = [
   'Иван Коробов - Вечер на дне.mp3',
   'Иван Коробов - Белая душа.mp3',
@@ -21,95 +24,96 @@ let track;
 let hover = 0;
 let index = 4;
 audio.volume = 1;
-const items = document.querySelectorAll('.slider__item');
-
-document.querySelector('.slider').addEventListener('mousemove', () => hover = 1);
-document.querySelector('.slider').addEventListener('mouseout', () => hover = 0);
-
-function updateScroll() {
-    if (window.scrollY > 0) {
-      document.querySelector('header').classList.add('header_scrolled');
-    } else {
-      document.querySelector('header').classList.remove('header_scrolled');
-    }
-  }
-  window.addEventListener("scroll", updateScroll);
-  function currentSlide(n) {
-    index = n - 1;
-    showSlides();
-  }
-  function plusSlides(n) {
-    if ((index < items.length - 1) && (n > 0)) {
-      index = index + n;
-    } else if ((index >= items.length - 1) && (n > 0)) {
-      index = 0;
-    } else if ((index >= 1 ) && (n < 0)) {
-      index = index + n;
-    } else if ((index === 0) && (n < 0)) {
-      index = items.length - 1;
-    }
-    showSlides();
-  }
-
-setInterval(function() {
-      if (!hover) {
-        index ++;
-        if (index === items.length) {
-        index = 0;
-        }
-        showSlides();
-  }}, 3000);
-
-function showSlides() {
-  for (let i = 0; i < items.length; i++) {
-    items[i].style.left = '10000px';
-    items[i].style.right = 'unset';
-        if (i !== index) {
-          items[i].classList.contains('active') && items[i].classList.remove('active');
-        }
-        if ((items[i - 1]) && ((i - 1) !== (index - 1))) {
-            items[i - 1].classList.contains('prev') && items[i - 1].classList.remove('prev');
-        } else if (!items[i - 1] && items[i - 1] !== 0) {
-          items[items.length - 1].classList.contains('prev') && items[items.length - 1].classList.remove('prev');
-        }
-        if ((items[i + 1]) && ((i + 1) !== (index + 1))) {
-            items[i + 1].classList.contains('next') && items[i + 1].classList.remove('next');
-        } else if (!items[i + 1]) {
-          items[0].classList.contains('next') && items[0].classList.remove('next');
-        }
-      }
-if(items[index - 1]) {
-  items[index - 1].style.left = 'unset';
-  items[index - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
-  items[index - 1].classList.add('prev');
-} else {
-  items[items.length - 1].style.left = 'unset';
-  items[items.length - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
-  items[items.length - 1].classList.add('prev');
-}
-items[index].classList.add('active');
-if (items[index].style.right) {items[index].style.right = 'unset';}
-items[index].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth - 0.5 * items[index].offsetWidth) + 'px';
-if(items[index + 1]) {
-if (items[index + 1].style.right) {items[index + 1].style.right = 'unset';}
-items[index + 1].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
-items[index + 1].classList.add('next');
-} else {
-if (items[0].style.right) {items[0].style.right = 'unset';}
-items[0].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
-items[0].classList.add('next');
-}
-let dots = document.getElementsByClassName("dot");
-        for (let i = 0; i < dots.length; i++) {
-          dots[i].className = dots[i].className.replace(" dot__active", "");
-        }
-        dots[index].className += " dot__active";
-}
 
 window.onload = function() {
   track = 0;
   btnPause.style.display = 'none';
   btnOn.style.display = 'none';
+}
+openSong();
+window.addEventListener("scroll", updateScroll);
+document.querySelector('.slider').addEventListener('mousemove', () => hover = 1);
+document.querySelector('.slider').addEventListener('mouseout', () => hover = 0);
+
+function updateScroll() {
+  if (window.scrollY > 0) {
+    document.querySelector('header').classList.add('header_scrolled');
+  } else {
+    document.querySelector('header').classList.remove('header_scrolled');
+  }
+}
+  
+function currentSlide(n) {
+    index = n - 1;
+    showSlides();
+  }
+function plusSlides(n) {
+  if ((index < items.length - 1) && (n > 0)) {
+    index = index + n;
+  } else if ((index >= items.length - 1) && (n > 0)){
+    index = 0;
+  } else if ((index >= 1 ) && (n < 0)) {
+    index = index + n;
+  } else if ((index === 0) && (n < 0)) {
+    index = items.length - 1;
+  }
+  showSlides();
+}
+
+setInterval(function() {
+  if (!hover) {
+    index ++;
+    if (index === items.length) {
+      index = 0;
+    }
+    showSlides();
+  }
+}, 3000);
+
+function showSlides() {
+  for (let i = 0; i < items.length; i++) {
+    items[i].style.left = '10000px';
+    items[i].style.right = 'unset';
+    if (i !== index) {
+      items[i].classList.contains('active') && items[i].classList.remove('active');
+    }
+    if ((items[i - 1]) && ((i - 1) !== (index - 1))) {
+      items[i - 1].classList.contains('prev') && items[i - 1].classList.remove('prev');
+    } else if (!items[i - 1] && items[i - 1] !== 0) {
+      items[items.length - 1].classList.contains('prev') && items[items.length - 1].classList.remove('prev');
+    }
+    if ((items[i + 1]) && ((i + 1) !== (index + 1))) {
+      items[i + 1].classList.contains('next') && items[i + 1].classList.remove('next');
+    } else if (!items[i + 1]) {
+      items[0].classList.contains('next') && items[0].classList.remove('next');
+    }
+  }
+  if(items[index - 1]) {
+    items[index - 1].style.left = 'unset';
+    items[index - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
+    items[index - 1].classList.add('prev');
+  } else {
+    items[items.length - 1].style.left = 'unset';
+    items[items.length - 1].style.right = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
+    items[items.length - 1].classList.add('prev');
+  }
+  items[index].classList.add('active');
+  if (items[index].style.right) {items[index].style.right = 'unset';}
+  items[index].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth - 0.5 * items[index].offsetWidth) + 'px';
+  if(items[index + 1]) {
+  if (items[index + 1].style.right) {items[index + 1].style.right = 'unset';}
+  items[index + 1].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
+  items[index + 1].classList.add('next');
+  } else {
+  if (items[0].style.right) {items[0].style.right = 'unset';}
+  items[0].style.left = (0.5 * document.querySelector('.slider__items').offsetWidth + 0.5 * items[index].offsetWidth) + 'px';
+  items[0].classList.add('next');
+  }
+  let dots = document.getElementsByClassName("dot");
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" dot__active", "");
+  }
+  dots[index].className += " dot__active";
 }
 
 function switchTrack (numTrack) {
@@ -126,32 +130,32 @@ function switchTrack (numTrack) {
 
 
 btnPlay.addEventListener('click', function() {
-    if (document.querySelector('.paused')) {
-      document.querySelector('.paused').classList.add('playing');
-      document.querySelector('.paused').classList.remove('paused');
-    }
-    btnPlay.style.display = 'none';
-    btnPause.style.display = 'initial';
-    if (track === 0) {
-      songs[0].classList.add('playing');
-    }
-    audio.play();
-  });
+  if (document.querySelector('.paused')) {
+    document.querySelector('.paused').classList.add('playing');
+    document.querySelector('.paused').classList.remove('paused');
+  }
+  btnPlay.style.display = 'none';
+  btnPause.style.display = 'initial';
+  if (track === 0) {
+    songs[0].classList.add('playing');
+  }
+  audio.play();
+});
 
-  audioPlay = setInterval(function() {
-    if (audio.currentTime > 0 && songs[track].classList.contains('playing')) {
-      makeEqualizer();
-    }
-    let audioTime = Math.round(audio.currentTime);
-    let audioLength = Math.round(audio.duration);
-    time.style.width = (audioTime * 100) / audioLength + '%';
-    if (audioTime === audioLength && track < playlist.length - 1) {
-        track ++; 
-        switchTrack(track);
-    } else if (audioTime == audioLength && track >= playlist.length - 1) {
-        track = 0;
-        switchTrack(track);
-    }
+audioPlay = setInterval(function() {
+  if (audio.currentTime > 0 && songs[track].classList.contains('playing')) {
+    makeEqualizer();
+  }
+  let audioTime = Math.round(audio.currentTime);
+  let audioLength = Math.round(audio.duration);
+  time.style.width = (audioTime * 100) / audioLength + '%';
+  if (audioTime === audioLength && track < playlist.length - 1) {
+    track ++; 
+    switchTrack(track);
+  } else if (audioTime == audioLength && track >= playlist.length - 1) {
+    track = 0;
+    switchTrack(track);
+  }
 }, 100)
 
 btnPause.addEventListener('click', function() {
@@ -166,21 +170,21 @@ btnPause.addEventListener('click', function() {
 
 btnPrev.addEventListener('click', function() {
   if (track > 0) {
-      track --;
-      switchTrack(track);
+    track --;
+    switchTrack(track);
   } else {
-      track = playlist.length - 1;
-      switchTrack(track);
+    track = playlist.length - 1;
+    switchTrack(track);
   }
 });
 
 btnNext.addEventListener('click', function() {
   if (track < playlist.length - 1) {
-      track ++;
-      switchTrack(track);
+    track ++;
+    switchTrack(track);
   } else {
-      track = 0;
-      switchTrack(track);
+    track = 0;
+    switchTrack(track);
   }
 });
 
@@ -288,5 +292,17 @@ function makeEqualizer() {
   }
 }
 
-
-//попробовать устанавливать time.style.width на ближайший equalizer item played
+function openSong(event, songName) {
+  for (let i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  for (let i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" visible", "");
+  }
+  if (document.getElementById(songName)) {
+  document.getElementById(songName).style.display = "block";
+  }
+  if (event) {
+  event.currentTarget.className += " visible";
+  }
+}

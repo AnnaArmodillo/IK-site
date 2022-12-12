@@ -74,10 +74,8 @@ h1 {
     text-align: center;
 }
 
-p {
+.section__bio p, .section__songs p, .section__video p {
     color: cadetblue;
-    font-size: 26px;
-    text-align: justify;
 }
 .section__bio {
     width: 70%;
@@ -97,7 +95,7 @@ p {
 }
 
 .section__video {
-    padding: 80px;
+    padding-top: 50px;
 }
 
 .section__video p {
@@ -213,7 +211,7 @@ p {
 
 .slider__items {
   margin-top: 20px;
-  width: 80vw;
+  width: 80%;
   height: 400px;
   display: flex;
   flex-wrap: nowrap;
@@ -421,3 +419,53 @@ p {
   margin-bottom: 6px;
 }
 
+.tab {
+  float: left;
+  width: 25%;
+  height: 300px;
+}
+
+.tablinks {
+  display: block;
+  background-color: inherit;
+  color: cadetblue;
+  font-size: 20px;
+  padding: 22px 16px;
+  width: 100%;
+  border: none;
+  outline: none;
+  text-align: left;
+  font-family: inherit;
+}
+
+.section__accords {
+  margin-bottom: 20px;
+  padding-top: 50px;
+}
+
+.section__accords__menu {
+  box-sizing: border-box;
+  display: flex;
+}
+
+.tablinks:hover {
+  color: cyan;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.tablinks.visible {
+  color: cyan;
+}
+
+.tabcontent {
+  padding: 0px 12px;
+  width: 75%;
+  border-left: none;
+  color: cadetblue;
+  text-align: center;
+}
+
+pre {
+  font-family: inherit;
+}
